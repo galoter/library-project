@@ -11,7 +11,7 @@
 	<div class="row"> 
 		<div class="col-xs-12 bg-primary" > <h1>Library Project</h1></div>
 	</div>
-	<div ng-controller="AuthorController as authorCtrl">
+	<div ng-controller="AuthorController as authorCtrl" ng-init="authorCtrl.reload()">
 		<div ng-if="authorCtrl.state === 'list'">
 			<div class="row">
 				<div class="col-xs-12" > <h2>Authors</h2></div>

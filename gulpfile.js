@@ -2,6 +2,8 @@ var gulp = require('gulp');
 var connect = require('gulp-connect');
 var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
+var karma         = require('karma').server;
+
 
 gulp.task("default",['less','start-server','watch'],function(){
 	console.log('ok start');
@@ -31,4 +33,12 @@ gulp.task('less', function () {
     .pipe(less())
     .pipe(minifyCSS())
     .pipe(gulp.dest('css'));
+});
+
+
+gulp.task('test', [], function() {
+	return karma.start({
+		configFile: __dirname + '/karma.conf.js',
+		singleRun: false
+	});
 });
