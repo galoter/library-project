@@ -7,25 +7,76 @@
 <body>
 
 
-<div class="container" ng-controller="AuthorController">
+<div class="container" ng-controller="LibraryController as libCtrl">
 	<div class="row"> 
 		<div class="col-xs-12 bg-primary" > <h1>Library Project</h1></div>
 	</div>
-	<div class="row"> 
-		<div class="col-xs-12" > <h2>Authors</h2></div>
-	</div>
-	<div class="row"> 
-		<div class="col-xs-12" > 
-			<div class="list-group">
-			  <a href="" class="list-group-item" ng-repeat="author in authors track by $index">
-			    <span class="badge">{{author.books.length}}</span>
-			    	{{author.name}}
-			  </a>
+	<div ng-controller="AuthorController as authorCtrl">
+		<div ng-if="authorCtrl.state === 'list'">
+			<div class="row">
+				<div class="col-xs-12" > <h2>Authors</h2></div>
+			</div>
+			<div class="row"> 
+				<div class="col-xs-12" > 
+					<div class="list-group">
+					  <a href="" class="list-group-item" ng-repeat="author in authorCtrl.authors track by $index" ng-click="authorCtrl.selectAuthor($index)">
+					    <span class="badge">{{author.books.length}}</span>
+					    	{{author.name}}
+					  </a>
+					  <a href="" class="list-group-item" ng-click="authorCtrl.createBtn()">
+					    <i class="glyphicon glyphicon-plus-sign"></i> Add Author
+					  </a>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
+		<div ng-if="authorCtrl.state === 'view'">
+			<div class="row">
+				<div class="col-xs-12" >
+					<h2>{{authorCtrl.selectedAuthor.name}}</h2>
+					<p>{{authorCtrl.selectedAuthor.details}}</p>
+				</div>
+				<div class="col-xs-12" >
+					<h2>Books</h2>
+					<div class="media"  ng-repeat="book in authorCtrl.selectedAuthor.books track by $index">
+						<div class="media-body">
+							<h4>{{book.name}}</h4>
+							<p>{{book.details}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class="btn btn-default" ng-click="authorCtrl.editBtn()">Edit</button>
+			<button class="btn btn-default" ng-click="authorCtrl.clearSelection()">Back</button>
+		</div>
+		<div ng-if="authorCtrl.state === 'create' || authorCtrl.state === 'edit'">
+			<div class="row">
+				<div class="col-xs-12" >
+					<h2 ng-if="authorCtrl.state === 'create'">Create Author</h2>
+					<h2 ng-if="authorCtrl.state === 'edit'">Edit Author</h2>
+				</div>
+				<div class="col-xs-12" >
+					<form ng-submit="authorCtrl.submit()">
+						<div class="form-group">
+						    <label for="name">Author Name</label>
+						    <input type="text" class="form-control" ng-model="authorCtrl.model.name" id="name" placeholder="Author Name">
+						</div>
+						<div class="form-group">
+						    <label for="details">Author Details</label>
+						    <textarea class="form-control" id="details" ng-model="authorCtrl.model.details" placeholder="Details"></textarea>
+						</div>
+						<input type="submit" class="btn btn-primary" value="Create"/>
+						<button class="btn btn-default" ng-click="authorCtrl.clearSelection()">Back</button>
+						<pre>{{authorCtrl.model|json:true}}</pre>
+					</form>
+				</div>
+			</div>
 
+		</div>
+	</div>
 </div>
+
+
 
  <script type="text/javascript" src='js/angular.min.js'></script>
  <script type="text/javascript" src='js/app.js'></script>
